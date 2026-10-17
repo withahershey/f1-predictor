@@ -19,12 +19,12 @@ def build_features(df):
 
     for col, name in [("finish", "track_finish_history"), ("quali_pos", "track_quali_history")]:
         df[name] = df.groupby(["driver", "event"])[col].transform(lambda s: s.shift(1).expanding().mean())
-        return df
+    return df
 
 
 quali_feats = ["driver_quali_form", "team_quali_pos_form", "track_quali_history"]
 race_feats = ["driver_finish_form", "team_finish_form", "driver_dnf_rate", "track_finish_history", "grid"]
 
-from features import build_features
-df = build_features(pd.read_csv("results.csv"))
-print(df[df.driver=="VER"][["year","round","finish","driver_finish_form"]].tail(8))
+if __name__ == "__main__":
+    df = build_features(pd.read_csv("results.csv"))
+    print(df[df.driver=="VER"][["year","round","finish","driver_finish_form"]].tail(8)) 

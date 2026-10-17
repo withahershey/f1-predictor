@@ -22,6 +22,13 @@ def weekend(year, round):
     out["event"] = r.event["EventName"]
     return out
 
+def real_grid(year, rnd):
+    q = fastf1.get_session(year, rnd, "Q")
+    q.load(laps=False, telemetry=False, weather=False, messages=False)
+    out = q.results[["Abbreviation", "Position"]].rename(
+        columns={"Abbreviation": "driver", "Position": "grid"})
+    return out
+
 if __name__ == "__main__":
     rows = []
     for year in range(2018, pd.Timestamp.now().year + 1):
